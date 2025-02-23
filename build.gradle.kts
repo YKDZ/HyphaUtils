@@ -34,7 +34,16 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.shadowJar {
-    archiveFileName.set("HyphaUtils-" + project.version + ".jar")
+    archiveFileName.set(rootProject.name + "-" + project.version + ".jar")
+}
+
+tasks.processResources {
+    val props = mapOf("version" to version)
+    inputs.properties(props)
+    filteringCharset = "UTF-8"
+    filesMatching("*plugin.yml") {
+        expand(props)
+    }
 }
 
 publishing {
@@ -42,11 +51,11 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             groupId = "cn.encmys"
-            artifactId = "HyphaUtils"
+            artifactId = rootProject.name
             version = rootProject.version.toString()
 
             pom {
-                name.set("HyphaUtils")
+                name.set(rootProject.name)
                 description.set("Common utils for Hypha plugins.")
                 url.set("https://github.com/YKDZ")
                 licenses {

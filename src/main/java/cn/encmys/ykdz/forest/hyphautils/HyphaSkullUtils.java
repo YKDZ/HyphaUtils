@@ -7,8 +7,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.UUID;
 
 public class HyphaSkullUtils {
@@ -16,29 +21,37 @@ public class HyphaSkullUtils {
      * @param data Player name or texture hash
      * @return ItemStack of skull
      */
-    public static ItemStack getSkullFromData(@NotNull String data) {
-        // 哈希
-        if (data.length() >= 16) {
-            data = data.toLowerCase().replace("https://textures.minecraft.net/texture/", "");
+    public static @NotNull ItemStack getSkullFromData(@NotNull String data) {
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
 
-            ItemStack item = new ItemStack(Material.PLAYER_HEAD);
-            SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
-
-            if (skullMeta == null) {
-                return item;
-            }
-
-            // 使用现代 API 创建 PlayerProfile
+        // 链接
+        if (data.startsWith("http:") || data.startsWith("https:")) {
             PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
-            profile.setProperty(new ProfileProperty("textures", data));
-            skullMeta.setPlayerProfile(profile);
+            PlayerTextures textures = profile.getTextures();
+            try {
+                textures.setSkin(new URI(data).toURL());
+            } catch (URISyntaxException | MalformedURLException ignored) {
+            }
+            profile.setTextures(textures);
+            item.editMeta(SkullMeta.class, skullMeta -> {
+                skullMeta.setPlayerProfile(profile);
+            });
+            return item;
+        }
+        // base64 JSON 数据
+        else if (data.length() >= 16) {
+            item.editMeta(SkullMeta.class, skullMeta -> {
+                final UUID uuid = UUID.randomUUID();
+                final PlayerProfile playerProfile = Bukkit.createProfile(uuid, uuid.toString().substring(0, 16));
+                playerProfile.setProperty(new ProfileProperty("textures", data));
 
-            item.setItemMeta(skullMeta);
+                skullMeta.setPlayerProfile(playerProfile);
+            });
+
             return item;
         }
         // 玩家名
         else {
-            ItemStack item = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 
             if (skullMeta == null) {

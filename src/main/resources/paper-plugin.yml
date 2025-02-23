@@ -1,0 +1,4 @@
+name: HyphaUtils
+version: '${version}'
+main: cn.encmys.ykdz.forest.hyphautils.HyphaUtils
+api-version: '1.21.4'
