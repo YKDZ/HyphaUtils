@@ -1,4 +1,4 @@
-package cn.encmys.ykdz.forest.hyphautils;
+package cn.encmys.ykdz.forest.hyphautils.utils;
 
 import org.jetbrains.annotations.NotNull;
 

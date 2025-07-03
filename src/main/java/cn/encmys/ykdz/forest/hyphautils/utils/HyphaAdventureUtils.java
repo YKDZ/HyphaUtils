@@ -1,4 +1,4 @@
-package cn.encmys.ykdz.forest.hyphautils;
+package cn.encmys.ykdz.forest.hyphautils.utils;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HyphaAdventureUtils {
-    @NotNull
-    public static List<Component> getComponentFromMiniMessage(@NotNull List<String> texts) {
+    public static @NotNull List<Component> getComponentFromMiniMessage(@NotNull List<String> texts) {
         List<Component> result = new ArrayList<>();
         for (String text : texts) {
             result.add(getComponentFromMiniMessage(text));
@@ -26,12 +25,24 @@ public class HyphaAdventureUtils {
         return result;
     }
 
-    @NotNull
-    public static Component getComponentFromMiniMessage(@Nullable String text) {
+    public static @NotNull Component getComponentFromMiniMessage(@Nullable String text) {
         if (text == null || text.isEmpty()) {
             return Component.empty();
         }
         return MiniMessage.miniMessage().deserialize(text).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+    }
+
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull Component s) {
+        if (sender instanceof Player player) sendPlayerMessage(player, s);
+        else if (sender instanceof ConsoleCommandSender) sendConsoleMessage(s);
+    }
+
+    public static void sendPlayerMessage(@NotNull Player player, @NotNull Component s) {
+        player.sendMessage(s);
+    }
+
+    public static void sendConsoleMessage(@NotNull Component s) {
+        Bukkit.getConsoleSender().sendMessage(s);
     }
 
     public static void sendMessage(@NotNull CommandSender sender, @NotNull String s) {
@@ -56,8 +67,7 @@ public class HyphaAdventureUtils {
         player.playSound(sound);
     }
 
-    @NotNull
-    public static List<String> componentToLegacy(@NotNull List<Component> components) {
+    public static @NotNull List<String> componentToLegacy(@NotNull List<Component> components) {
         List<String> result = new ArrayList<>();
         for (Component component : components) {
             result.add(componentToLegacy(component));
@@ -65,8 +75,7 @@ public class HyphaAdventureUtils {
         return result;
     }
 
-    @NotNull
-    public static String componentToLegacy(@NotNull Component component) {
+    public static @NotNull String componentToLegacy(@NotNull Component component) {
         return LegacyComponentSerializer.legacySection().serialize(component);
     }
 
@@ -74,8 +83,7 @@ public class HyphaAdventureUtils {
         return c == '§' || c == '&';
     }
 
-    @NotNull
-    public static String legacyToMiniMessage(@NotNull String legacy) {
+    public static @NotNull String legacyToMiniMessage(@NotNull String legacy) {
         return MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacySection().deserialize(legacy));
     }
 }

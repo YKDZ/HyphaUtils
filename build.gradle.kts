@@ -18,8 +18,8 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     annotationProcessor("org.jetbrains:annotations:26.0.1")
-    implementation("net.kyori:adventure-text-serializer-ansi:4.18.0")
-    implementation("net.kyori:adventure-text-serializer-legacy:4.18.0")
+    implementation("net.kyori:adventure-text-serializer-ansi:4.20.0")
+    implementation("net.kyori:adventure-text-serializer-legacy:4.20.0")
 }
 
 java {
@@ -35,15 +35,6 @@ tasks.withType<JavaCompile> {
 
 tasks.shadowJar {
     archiveFileName.set(rootProject.name + "-" + project.version + ".jar")
-}
-
-tasks.processResources {
-    val props = mapOf("version" to version)
-    inputs.properties(props)
-    filteringCharset = "UTF-8"
-    filesMatching("*plugin.yml") {
-        expand(props)
-    }
 }
 
 publishing {

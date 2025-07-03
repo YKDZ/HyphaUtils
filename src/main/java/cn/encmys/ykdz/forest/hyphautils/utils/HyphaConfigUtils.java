@@ -1,4 +1,4 @@
-package cn.encmys.ykdz.forest.hyphautils;
+package cn.encmys.ykdz.forest.hyphautils.utils;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
