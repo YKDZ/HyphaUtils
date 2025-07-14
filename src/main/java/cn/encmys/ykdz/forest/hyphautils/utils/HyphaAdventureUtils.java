@@ -84,6 +84,7 @@ public class HyphaAdventureUtils {
     }
 
     public static @NotNull String legacyToMiniMessage(@NotNull String legacy) {
-        return MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacySection().deserialize(legacy));
+        if (legacy.contains("§")) return MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacySection().deserialize(legacy));
+        return MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacyAmpersand().deserialize(legacy));
     }
 }
