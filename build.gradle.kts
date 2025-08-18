@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
     `java-library`
     id("java")
@@ -16,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     annotationProcessor("org.jetbrains:annotations:26.0.1")
     compileOnly("net.kyori:adventure-text-serializer-ansi:4.20.0")
     compileOnly("net.kyori:adventure-text-serializer-legacy:4.20.0")
@@ -38,35 +40,22 @@ tasks.shadowJar {
 }
 
 publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            groupId = "cn.encmys"
-            artifactId = rootProject.name
-            version = rootProject.version.toString()
-
-            pom {
-                name.set(rootProject.name)
-                description.set("Common utils for Hypha plugins.")
-                url.set("https://github.com/YKDZ")
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("ykdz")
-                        name.set("YKDZ")
-                        email.set("307079958@qq.com")
-                    }
-                }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ykdz/hyphautils")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
             }
         }
     }
-
-    repositories {
-        mavenLocal()
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+            groupId = group as String
+            artifactId = rootProject.name.lowercase(Locale.getDefault())
+            version = version.lowercase(Locale.getDefault())
+        }
     }
 }
