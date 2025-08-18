@@ -54,7 +54,7 @@ publishing {
         register<MavenPublication>("gpr") {
             from(components["java"])
             groupId = group as String
-            artifactId = rootProject.name
+            artifactId = rootProject.name.lowercase(Locale.getDefault())
             version = version.lowercase(Locale.getDefault())
         }
     }
