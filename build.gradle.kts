@@ -43,7 +43,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/ykdz/hyphautils")
+            url = uri("https://maven.pkg.github.com/ykdz/HyphaUtils")
             credentials {
                 username = project.findProperty("gpr.user") as String? ?: System.getenv("GPR_USER")
                 password = project.findProperty("gpr.key") as String? ?: System.getenv("GPR_KEY")
@@ -54,7 +54,7 @@ publishing {
         register<MavenPublication>("gpr") {
             from(components["java"])
             groupId = group as String
-            artifactId = rootProject.name.lowercase(Locale.getDefault())
+            artifactId = rootProject.name
             version = version.lowercase(Locale.getDefault())
         }
     }
