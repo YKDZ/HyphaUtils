@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     annotationProcessor("org.jetbrains:annotations:26.0.1")
     compileOnly("net.kyori:adventure-text-serializer-ansi:4.20.0")
     compileOnly("net.kyori:adventure-text-serializer-legacy:4.20.0")
